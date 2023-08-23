@@ -1,0 +1,38 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+%}
+
+%%
+[0-9]+(\.[0-9]+)? {
+    printf("Constant: %s\n", yytext);
+}
+
+.|\n { /* Ignore other characters */ }
+
+%%
+
+int yywrap(void) {
+    return 1; // Indicate no more input files
+}
+
+int main(void) {
+    FILE *f;
+    char file[100];
+
+    printf("Enter File Name: ");
+    scanf("%s", file);
+
+    f = fopen(file, "r");
+    if (!f) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    yyin = f;
+    yylex();
+
+    fclose(f);
+
+    return 0;
+}
