@@ -1,0 +1,23 @@
+%{
+int charCount = 0;
+int wordCount = 0;
+int lineCount = 0;
+%}
+
+%%
+[a-zA-Z]+    { wordCount++; charCount += yyleng; }
+\n           { lineCount++; }
+.            { charCount++; }
+%%
+
+int yywrap() {
+    return 1; // Signal the end of input.
+}
+
+int main() {
+    yylex();
+    printf("Character count: %d\n", charCount);
+    printf("Word count: %d\n", wordCount);
+    printf("Line count: %d\n", lineCount);
+    return 0;
+}
