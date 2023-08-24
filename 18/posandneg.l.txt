@@ -1,0 +1,28 @@
+%{
+#include <stdio.h>
+int positive_count = 0;
+int negative_count = 0;
+%}
+
+%%
+[-+]?[0-9]+ {
+    int num = atoi(yytext);
+    if (num > 0)
+        positive_count++;
+    else if (num < 0)
+        negative_count++;
+}
+.|\n ; // Ignore other characters
+%%
+
+int main() {
+    printf("Enter numbers separated by spaces:\n");
+    yylex();
+    printf("Positive numbers: %d\n", positive_count);
+    printf("Negative numbers: %d\n", negative_count);
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}
