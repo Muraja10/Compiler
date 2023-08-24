@@ -1,0 +1,38 @@
+%{
+#include <stdio.h>
+#include <string.h>
+
+int word_count = 0;
+char sentence[1000];
+char word_to_find[100];
+%}
+
+%%
+[a-zA-Z]+ {
+    if (strcmp(yytext, word_to_find) == 0) {
+        word_count++;
+    }
+}
+.|\n ; // Match any character or newline
+
+%%
+
+int yywrap() {
+    return 1; // Indicate end of input
+}
+
+int main() {
+    printf("Enter a sentence: ");
+    fgets(sentence, sizeof(sentence), stdin);
+
+    printf("Enter the word to find: ");
+    scanf("%s", word_to_find);
+
+    yy_scan_string(sentence); // Set the input string for Lex
+
+    yylex();
+
+    printf("The word '%s' occurs %d times in the sentence.\n", word_to_find, word_count);
+
+    return 0;
+}
