@@ -1,0 +1,17 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+replaceMe    { printf("identifier "); }
+.|\n        { putchar(yytext[0]); }
+%%
+
+int yywrap() {
+    return 1;  // Indicate end of input
+}
+
+int main() {
+    yylex();
+    return 0;
+}
